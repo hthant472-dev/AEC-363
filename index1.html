@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YAU - Agricultural Management Platform</title>
+    <style>
+        :root {
+            /* Theme Colors */
+            --primary-color: #2e7d32;
+            --dark-color: #263238;
+            --light-color: #f8f9fa;
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --accent-color: #2e7d32;
+            --shadow: 0 4px 15px rgba(0,0,0,0.05);
+            
+            /* IPM Icon Colors */
+            --ipm-orange: #f27a47;
+            --ipm-purple: #832572;
+            --ipm-green: #2e7d42;
+            --ipm-blue: #1f93cb;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1.main-title {
+            text-align: center;
+            color: var(--accent-color);
+            margin-bottom: 30px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        /* -------------------------------------- */
+        /* IPM Section Styles                     */
+        /* -------------------------------------- */
+        .ipm-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .ipm-section h2 {
+            margin-top: 0;
+            color: var(--dark-color);
+            font-size: 1.6rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .ipm-subtitle {
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        /* 2x2 Grid Layout for the 5 methods */
+        .ipm-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .ipm-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .ipm-item {
+            background-color: #ffffff;
+            border-radius: 6px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        /* Clickable Header Trigger */
+        .ipm-trigger {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* Icon Circle Layout */
+        .ipm-circle {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .ipm-trigger:hover .ipm-circle {
+            transform: scale(1.08);
+        }
+
+        .ipm-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        /* Dropdown Content Box */
+        .ipm-content {
+            margin-top: 15px;
+            margin-left: 75px;
+            padding: 15px;
+            border-left: 3px solid #ddd;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #444;
+            background-color: #fafafa;
+            display: none; 
+            border-radius: 0 6px 6px 0;
+            animation: slideDown 0.3s ease-in-out;
+        }
+
+        /* Active Transition Classes */
+        .ipm-item.active .ipm-content {
+            display: block;
+        }
+
+        .ipm-item.active .ipm-circle {
+            box-shadow: 0 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Unique Color Assignments */
+        .method-threshold .ipm-circle { background-color: var(--ipm-orange); }
+        .method-threshold .ipm-title { color: var(--ipm-orange); }
+        .method-threshold .ipm-content { border-left-color: var(--ipm-orange); }
+
+        .method-resistance .ipm-circle { background-color: var(--ipm-purple); }
+        .method-resistance .ipm-title { color: var(--ipm-purple); }
+        .method-resistance .ipm-content { border-left-color: var(--ipm-purple); }
+
+        .method-selective .ipm-circle { background-color: var(--ipm-green); }
+        .method-selective .ipm-title { color: var(--ipm-green); }
+        .method-selective .ipm-content { border-left-color: var(--ipm-green); }
+
+        .method-timing .ipm-circle { background-color: var(--ipm-green); }
+        .method-timing .ipm-title { color: var(--ipm-green); }
+        .method-timing .ipm-content { border-left-color: var(--ipm-green); }
+
+        .method-targeted .ipm-circle { background-color: var(--ipm-blue); }
+        .method-targeted .ipm-title { color: var(--ipm-blue); }
+        .method-targeted .ipm-content { border-left-color: var(--ipm-blue); }
+
+
+        /* -------------------------------------- */
+        /* Soil Fertility Section Styles          */
+        /* -------------------------------------- */
+        .soil-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .soil-section h2 {
+            margin-top: 0;
+            color: var(--dark-color);
+            font-size: 1.6rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .indicator-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            padding: 25px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-left 0.2s ease;
+            border-left: 6px solid transparent;
+            border: 1px solid #eee;
+        }
+
+        .indicator-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            border-left-color: var(--accent-color);
+        }
+
+        .indicator-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .indicator-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--dark-color);
+        }
+
+        .status-badge {
+            font-size: 0.8rem;
+            padding: 4px 8px;
+            border-radius: 20px;
+            background-color: #e0e0e0;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+        }
+
+        .indicator-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, margin-top 0.3s ease;
+            margin-top: 0;
+        }
+
+        .indicator-card.active .indicator-details {
+            max-height: 500px;
+            margin-top: 15px;
+        }
+
+        .indicator-card.active {
+            border-left-color: var(--accent-color);
+        }
+
+        .indicator-details ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .indicator-details li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+            color: #444;
+        }
+
+        .indicator-details li:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+<h1 class="main-title">Agricultural Management & Fertility Platform</h1>
+
+<div class="container">
+    
+    <div class="ipm-section">
+        <h2>⚗️Chemical Methods in IPM</h2>
+        <p class="ipm-subtitle">When chemical controls are necessary, IPM emphasizes:</p>
+
+        <div class="ipm-grid">
+            
+            <div class="ipm-item method-threshold" id="ipm1">
+                <div class="ipm-trigger" onclick="toggleIPM('ipm1')">
+                    <div class="ipm-circle">📊</div>
+                    <p class="ipm-title">Economic threshold-based application</p>
+                </div>
+                <div class="ipm-content">
+                    Treating only when pest populations exceed damaging levels.
+                </div>
+            </div>
+
+            <div class="ipm-item method-selective" id="ipm2">
+                <div class="ipm-trigger" onclick="toggleIPM('ipm2')">
+                    <div class="ipm-circle">🐞</div>
+                    <p class="ipm-title">Selective products</p>
+                </div>
+                <div class="ipm-content">
+                    Choosing pesticides with lower impact on natural enemies.
+                </div>
+            </div>
+
+            <div class="ipm-item method-targeted" id="ipm3">
+                <div class="ipm-trigger" onclick="toggleIPM('ipm3')">
+                    <div class="ipm-circle">🎯</div>
+                    <p class="ipm-title">Targeted application</p>
+                </div>
+                <div class="ipm-content">
+                    Using precision technology to apply only where needed.
+                </div>
+            </div>
+
+            <div class="ipm-item method-resistance" id="ipm4">
+                <div class="ipm-trigger" onclick="toggleIPM('ipm4')">
+                    <div class="ipm-circle">🧬</div>
+                    <p class="ipm-title">Resistance management</p>
+                </div>
+                <div class="ipm-content">
+                    Rotating modes of action and using mixtures.
+                </div>
+            </div>
+
+            <div class="ipm-item method-timing" id="ipm5">
+                <div class="ipm-trigger" onclick="toggleIPM('ipm5')">
+                    <div class="ipm-circle">⏳</div>
+                    <p class="ipm-title">Timing optimization</p>
+                </div>
+                <div class="ipm-content">
+                    Applying when pests are most vulnerable and beneficials are least active.
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="soil-section">
+        <h2>💌Key Soil Fertility Indicators</h2>
+        
+        <div class="indicator-card" onclick="toggleDetails(this)">
+            <div class="indicator-header">
+                <h3 class="indicator-title">Cation Exchange Capacity (CEC)</h3>
+                <span class="status-badge">Tap to View</span>
+            </div>
+            <div class="indicator-details">
+                <ul>
+                    <li><strong>Definition:</strong> A measure of the soil's ability to hold and exchange positively charged nutrient ions (cations).</li>
+                    <li>High CEC soils have a greater nutrient-holding capacity.</li>
+                    <li>However, CEC indicates <em>capacity</em>, not actual nutrient levels — a sandy soil can have low CEC yet be fertile if adequately fertilized.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="indicator-card" onclick="toggleDetails(this)">
+            <div class="indicator-header">
+                <h3 class="indicator-title">Soil pH</h3>
+                <span class="status-badge">Tap to View</span>
+            </div>
+            <div class="indicator-details">
+                <ul>
+                    <li><strong>Function:</strong> Determines nutrient solubility and plant availability.</li>
+                    <li><strong>Acidic (0-5):</strong> Leads to nutrient deficiencies and toxicities (Fe, Mn, Al). Requires applying lime.</li>
+                    <li><strong>Neutral (6-8):</strong> Ideal pH range for optimum plant growth and nutrient uptake.</li>
+                    <li><strong>Alkaline (9-14):</strong> Leads to nutrient deficiencies, toxicities (CO<sub>3</sub><sup>2-</sup>, HCO<sub>3</sub><sup>-</sup>, AlO<sub>4</sub>), and sodicity. Consider tolerant species.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="indicator-card" onclick="toggleDetails(this)">
+            <div class="indicator-header">
+                <h3 class="indicator-title">Organic Matter Content</h3>
+                <span class="status-badge">Tap to View</span>
+            </div>
+            <div class="indicator-details">
+                <ul>
+                    <li><strong>Function:</strong> Improves soil structure, water retention, and microbial life habitats.</li>
+                    <li>Provides a reservoir of slowly-released nutrients for plants.</li>
+                    <li>Promotes complex ecosystems featuring earthworms, microbes, and carbon storage essential for a "Healthy Soil" vs a "Degraded Soil".</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="indicator-card" onclick="toggleDetails(this)">
+            <div class="indicator-header">
+                <h3 class="indicator-title">Available Nutrient Levels</h3>
+                <span class="status-badge">Tap to View</span>
+            </div>
+            <div class="indicator-details">
+                <ul>
+                    <li><strong>Function:</strong> Represents the active concentration of Nitrogen (N), Phosphorus (P), Potassium (K), and micronutrients in forms that plant roots can directly uptake.</li>
+                    <li>Nutrient availability is heavily reliant on the soil pH spectrum.</li>
+                    <li>Imbalances lead to major nutrient deficiencies or specific trace element deficiencies.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // 1. IPM Section Toggle Logic
+    function toggleIPM(id) {
+        document.querySelectorAll('.ipm-item').forEach(item => {
+            if(item.id !== id) item.classList.remove('active');
+        });
+
+        const target = document.getElementById(id);
+        target.classList.toggle('active');
+    }
+
+    // 2. Soil Section Toggle Logic
+    function toggleDetails(card) {
+        card.classList.toggle('active');
+        
+        const badge = card.querySelector('.status-badge');
+        if (card.classList.contains('active')) {
+            badge.textContent = 'Close';
+            badge.style.backgroundColor = '#2e7d32';
+            badge.style.color = '#ffffff';
+        } else {
+            badge.textContent = 'Tap to View';
+            badge.style.backgroundColor = '#e0e0e0';
+            badge.style.color = '#333333';
+        }
+    }
+</script>
+
+</body>
+</html>
